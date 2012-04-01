@@ -8,11 +8,10 @@ Page {
         id: flickPages
         anchors.fill: parent
         content: [
-            Rectangle{
+            TasksList{
                 id: item2
-                width: mainPage.width;
+                width: mainPage.width
                 height: mainPage.height
-                color: "red"
             },
             Rectangle{
                 id: item1
