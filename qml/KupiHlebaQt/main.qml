@@ -3,6 +3,7 @@ import com.nokia.symbian 1.1
 
 import "code.js" as Code
 import "engine.js" as Engine
+import "myDB.js" as Mdb
 
 PageStackWindow {
     id: window
@@ -12,6 +13,7 @@ PageStackWindow {
     }
     showStatusBar: true
     showToolBar: true
+    //platformSoftwareInputPanelEnabled: true
 
     ToolBarLayout {
         id: toolBarLayout
@@ -27,8 +29,6 @@ PageStackWindow {
 
             }
         }
-
-
     }
 
     function login(uname, password){

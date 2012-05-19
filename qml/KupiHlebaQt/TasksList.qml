@@ -26,27 +26,7 @@ Item{
             id: taskItem
             anchors.right: parent.right
             anchors.left: parent.left
-
-            states:[
-                State{
-                    name: 'on'
-                    PropertyChanges { target: commentText; visible: true}
-                    PropertyChanges { target: subCol; visible: true}
-                    PropertyChanges { target: subtaskButton; text: '-'}
-                    PropertyChanges { target: taskItem; height: subCol.height + messageText.height + 20 + commentText.height + 20}
-
-                },
-                State{
-                    name: 'off'
-                    PropertyChanges { target: commentText; visible: false}
-                    PropertyChanges { target: subCol; visible: false}
-                    PropertyChanges { target: subtaskButton; text: '+'}
-                    PropertyChanges { target: taskItem; height: subtaskButton.height + 20}
-                }
-
-            ]
-            state: qmlState
-
+            height: messageText.height + 20
             Rectangle{
                 id: bannerDelegateRectangle
 
@@ -72,7 +52,7 @@ Item{
                     anchors.topMargin: 10
                     anchors.left: parent.left
                     anchors.top: parent.top
-                    anchors.right: subtaskButton.left
+                    anchors.right: parent.right
                     //color: "#fff"
                 }
                 MouseArea{
@@ -82,83 +62,9 @@ Item{
                     anchors.right: bannerDelegateRectangle.right
 
                     onClicked:{
-                        rootRect.selectedId = nid;
-                        rootRect.selectedIdx = index;
-                        rootRect.taskClicked();
-                        console.log('MouseArea Clicked');
+                        window.pageStack.push(Qt.resolvedUrl("TaskPage.qml"), {task: myModel.get(index)});
                     }
                 }
-                Button{
-                    id: subtaskButton
-                    text: '+'
-                    visible: true
-                    anchors.top: parent.top
-                    anchors.right: parent.right
-                    anchors.margins: 5
-                    onClicked:{
-                        taskItem.state = taskItem.state == 'off'? 'on': 'off';
-                        myModel.setProperty(index, "qmlState", taskItem.state);
-                        rootRect.selectedId = nid;
-                        rootRect.selectedIdx = index;
-                        rootRect.taskClicked();
-                    }
-
-                }
-                Text{
-                    id: commentText
-
-                    text: comment
-
-                    visible: false
-
-                    wrapMode: Text.WordWrap
-
-                    anchors.leftMargin: 50
-                    anchors.right: parent.right
-                    anchors.top: messageText.bottom
-                    anchors.left: parent.left
-
-                    //color: "#fff"
-                }
-                Column{
-                    id: subCol
-                    anchors.top: commentText.bottom
-                    anchors.leftMargin: 30
-                    anchors.right: parent.right
-                    anchors.left: parent.left
-                    spacing: 2
-                    visible: true
-                    Repeater{
-                        model: subtasks
-                        Item{
-                            width: parent.width
-                            height: subTaskMessage.height + subTaskComment.height
-                            Text{
-                                id: subTaskMessage
-                                text: message
-                                wrapMode: Text.WordWrap
-
-                                anchors.top: parent.top
-                                anchors.right: parent.right
-                                anchors.left: parent.left
-
-                            }
-                            Text{
-                                id: subTaskComment
-                                text: comment
-
-                                anchors.top: subTaskMessage.bottom
-                                anchors.leftMargin: 30
-                                anchors.right: parent.right
-                                anchors.left: parent.left
-
-                                wrapMode: Text.WordWrap
-                                visible: true
-                            }
-                        }
-                    }
-                }
-
             }
         }
     }

@@ -21,20 +21,32 @@ Item{
             width: parent.width
             text: "Username"
         }
-        TextArea{
+        TextField{
             id: usernameText
             width: parent.width
-            text: ""
+            text: "user1"
         }
         Label{
             width: parent.width
             text: "Password"
         }
-        TextArea{
+        TextField{
             id: passwordText
-            text: ""
+            text: "qwerty"
             width: parent.width
+            echoMode: TextInput.Password
         }
+        Label {
+            width: parent.width
+            text: qsTr("Remember me")
+        }
+
+        CheckBox {
+            id: rememberMe
+            checked: true
+            anchors.left: parent.left
+        }
+
         Button{
             text: "Login"
             width: parent.width
