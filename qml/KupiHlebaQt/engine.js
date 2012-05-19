@@ -1,5 +1,8 @@
 var URLSTART = 'http://www.kupihleba.ru';
 var SID = 0;
+var IMEI = '12345678';
+var VERSION = 1.522;
+
 
 var imageModels = new Object();
 
@@ -17,6 +20,68 @@ function login(){
 
     Code.getJSON(url, loginCallback);
 }
+
+function engineLogin(uname, password, code, user_code){
+    try{
+        var login_url = URLSTART + '/cgi-bin/mf_widget.cgi?imei=' + IMEI + '&uname=' + uname + '&pass=' + password + '&cmd=login&version=' + VERSION + '&rnd=' + Math.random(1);
+        if(user_code != ''){
+            login_url += '&code=' + code + '&user_code=' + user_code;
+        }
+
+        console.log(login_url);
+
+        mainPage.tasksList.indicator.visible = true;
+        mainPage.tasksList.indicator.running = true;
+        mainPage.flickPages.moveTo(2);
+
+
+        Code.getJSON(login_url, function(data){
+            engineAfterLogin(data);
+        });
+    } catch(e){
+        console.log(Code.obj2json(e));
+    }
+}
+
+function engineAfterLogin(data){
+    SID = data.sid;
+    parseLoadAll(data);
+
+}
+
+function parseLoadAll(data){
+    var subtasks = new Array();
+    var tempArray = new Array();
+    for(var i = 0; i < data.notime_tasks.length; i++){
+        var task = data.notime_tasks[i];
+        task.qmlState = 'off';
+        if(task.comment != ''){
+            task.comment = task.comment.split('\r').join('<br>');
+        }
+
+        if(parseInt(task.list_nid) == 0){
+            task.subtasks = new Array();
+            tempArray[task.nid] = task;
+        } else {
+            subtasks.push(task);
+        }
+    }
+
+    for(var i = 0; i < subtasks.length; i++){
+        tempArray[subtasks[i].list_nid].subtasks.push(subtasks[i]);
+    }
+    //noTimeTasks = tempArray;
+    for(var i in tempArray){
+        mainPage.tasksList.model.append(tempArray[i]);
+        console.log(Code.obj2json(tempArray[i]));
+    }
+    mainPage.tasksList.indicator.visible = false;
+    mainPage.tasksList.indicator.running = false;
+    mainPage.tasksList.list.visible = true;
+
+}
+
+
 
 function engineRegisterUser(login, password, des_user_name, email, user_code, code){
     try{
@@ -70,3 +135,4 @@ function engineGetRegisterCode(id){
 function updateUI(param_name, data){
 
 }
+

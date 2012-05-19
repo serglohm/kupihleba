@@ -6,7 +6,10 @@ import "engine.js" as Engine
 
 PageStackWindow {
     id: window
-    initialPage: MainPage {tools: toolBarLayout}
+    initialPage: MainPage {
+        id: mainPage
+        tools: toolBarLayout
+    }
     showStatusBar: true
     showToolBar: true
 
@@ -17,5 +20,19 @@ PageStackWindow {
             iconSource: "toolbar-back"
             onClicked: window.pageStack.depth <= 1 ? Qt.quit() : window.pageStack.pop()
         }
+        ToolButton {
+            flat: true
+            iconSource: "toolbar-home"
+            onClicked: {
+
+            }
+        }
+
+
+    }
+
+    function login(uname, password){
+        Engine.engineLogin(uname, password);
+
     }
 }

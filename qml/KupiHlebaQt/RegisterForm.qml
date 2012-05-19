@@ -59,6 +59,7 @@ Item {
         TextArea{
             id: passwordText
             text: ""
+            width: parent.width
         }
         Label{
             width: parent.width

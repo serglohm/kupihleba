@@ -3,32 +3,27 @@ import com.nokia.symbian 1.1
 
 Page {
     id: mainPage
+    property alias loginForm: loginForm
+    property alias registerForm: registerForm
+    property alias tasksList: tasksList
+    property alias flickPages: flickPages
 
     FlickPages{
         id: flickPages
         anchors.fill: parent
         content: [
-            Rectangle{
+            LoginForm{
+                id: loginForm
                 width: mainPage.width
                 height: mainPage.height
-                color: "green"
-                Column{
-                    width: mainPage.width
-                    height: 300
-                    TextArea{
-                        height: 300
-                        width: 300
-                        text: "test text"
-                    }
-                }
             },
             RegisterForm{
+                id: registerForm
                 width: mainPage.width
                 height: mainPage.height
-
             },
             TasksList{
-                id: item2
+                id: tasksList
                 width: mainPage.width
                 height: mainPage.height
             },
@@ -36,7 +31,7 @@ Page {
                 id: item1
                 width: mainPage.width;
                 height: mainPage.height
-                color: "blue"
+                color: "green"
             }
 
         ]

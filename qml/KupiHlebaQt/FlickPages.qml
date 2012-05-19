@@ -42,24 +42,25 @@ Item {
         }
 
         onMovementStarted:{
-            console.log("onMovementStarted");
+            //console.log("onMovementStarted");
             flick.startX = flick.contentX;
             flick.wasFlicked = false;
         }
         onMovementEnded:{
-            console.log("onMovementEnded: " + flick.wasFlicked);
+            //console.log("onMovementEnded: " + flick.wasFlicked);
             if(! flick.wasFlicked){
                 flick.stopX = flick.contentX;
                 flick.currentIdx = Math.round(flick.stopX / rootItem.width);
                 moveToIndex();
-                console.log('move to ' + flick.currentIdx * rootItem.width);
+                //console.log('move to ' + flick.currentIdx * rootItem.width);
             }
         }
         onFlickStarted:{
             flick.wasFlicked = true;
             flick.startX = flick.contentX
-            console.log("onFlickStarted: " + flick.startX);
+            //console.log("onFlickStarted: " + flick.startX);
         }
+
         onFlickEnded:{
             flick.stopX = flick.contentX;
             if(flick.startX <= rootItem.width * (rootItem.pageCount - 1) && flick.startX > 0){
@@ -73,20 +74,30 @@ Item {
             if(flick.currentIdx < 0){flick.currentIdx = 0;}
             else if(flick.currentIdx > (rootItem.pageCount - 1)){flick.currentIdx = (rootItem.pageCount - 1);}
 
-            console.log("onFlickEnded: " + flick.startX + " " + flick.stopX + ' ' + flick.currentIdx);
+            //console.log("onFlickEnded: " + flick.startX + " " + flick.stopX + ' ' + flick.currentIdx);
             moveToIndex();
         }
     }
+
     function moveToPrev(){
         flick.currentIdx--;
         if(flick.currentIdx < 0){flick.currentIdx = 0;}
         moveToIndex();
     }
+
     function moveToNext(){
         flick.currentIdx++;
-        if(flick.currentIdx > 3){flick.currentIdx = 3;}
+        if(flick.currentIdx > rootItem.pageCount - 1){flick.currentIdx = rootItem.pageCount - 1;}
         moveToIndex();
     }
+
+    function moveTo(index){
+        flick.currentIdx = index;
+        if(flick.currentIdx < 0){flick.currentIdx = 0;}
+        else if(flick.currentIdx > rootItem.pageCount - 1){flick.currentIdx = rootItem.pageCount - 1;}
+        moveToIndex();
+    }
+
 
     function moveToIndex(){
         flick.contentX = flick.currentIdx * rootItem.width;
